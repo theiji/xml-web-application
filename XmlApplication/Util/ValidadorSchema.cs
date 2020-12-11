@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 
-namespace XmlApplication
+namespace XmlApplication.Util
 {
     public class ValidadorSchema
     {

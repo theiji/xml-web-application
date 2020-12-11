@@ -5,7 +5,7 @@
     <div class="jumbotron">
         <h1>Theiji</h1>
         <p class="lead"></p>
-        <p><a href="http://github.com" class="btn btn-primary btn-lg">Github &raquo;</a></p>
+        <p><a href="https://github.com/theiji" class="btn btn-primary btn-lg" target="_blank">Github &raquo;</a></p>
     </div>
 
     <div class="row">

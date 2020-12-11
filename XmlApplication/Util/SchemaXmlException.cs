@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace XmlApplication
+namespace XmlApplication.Util
 {
     [Serializable]
     internal class SchemaXmlException : Exception

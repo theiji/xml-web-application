@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Validar Arquivo TISS" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ValidaTiss.aspx.cs" Inherits="XmlApplication.ValidaTiss" %>
+﻿<%@ Page Title="Validar Arquivo TISS" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ValidaTiss.aspx.cs" Inherits="XmlApplication.App.TISS.ValidaTiss" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h2><%: Title %>.</h2>

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace XmlApplication
+namespace XmlApplication.App.TISS
 {
 
 
