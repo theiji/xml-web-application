@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<definitions xmlns:tns="http://www.ans.gov.br/tiss/ws/tipos/tissSolicitacaoStatusRecursoGlosaTs/v30301"
+             xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas" xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://www.ans.gov.br/tiss/ws/tipos/tissSolicitacaoStatusRecursoGlosaTs/v30301"
+             name="tissSolicitacaoStatusRecursoGlosaTs">
+  <types>
+    <schema targetNamespace="http://www.ans.gov.br/tiss/ws/tipos/tissSolicitacaoStatusRecursoGlosaTs/v30301"
+            xmlns:tns="http://www.ans.gov.br/tiss/ws/tipos/tissSolicitacaoStatusRecursoGlosaTs/v30301"
+            xmlns:soap11-enc="http://schemas.xmlsoap.org/soap/encoding/"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+            xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://www.ans.gov.br/padroes/tiss/schemas" schemaLocation="tissWebServicesV3_03_01.xsd" />
+      <import namespace="http://www.ans.gov.br/padroes/tiss/schemas" schemaLocation="tissV3_03_01.xsd" />
+      <element name="mensagemTISSString" type="xsd:string" />
+    </schema>
+  </types>
+  <message name="enviarMensagemSolicitacaoStatusRecursoGlosaTISS_Request">
+    <part name="mensagem" element="tns:mensagemTISSString" />
+  </message>
+  <message name="enviarMensagemTISS_Response">
+    <part name="resposta" element="ans:mensagemTISS" />
+  </message>
+  <message name="tissFault">
+    <part name="tissFault" element="ans:tissFaultWS" />
+  </message>
+  <portType name="tissSolicitacaoStatusRecursoGlosaTs_PortType">
+    <operation name="tissSolicitacaoStatusRecursoGlosaTs_Operation">
+      <input message="tns:enviarMensagemSolicitacaoStatusRecursoGlosaTISS_Request" />
+      <output message="tns:enviarMensagemTISS_Response" />
+      <fault name="TissFault" message="tns:tissFault" />
+    </operation>
+  </portType>
+  <binding name="tissSolicitacaoStatusRecursoGlosaTs_Binding" type="tns:tissSolicitacaoStatusRecursoGlosaTs_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="tissSolicitacaoStatusRecursoGlosaTs_Operation">
+      <soap:operation />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="TissFault">
+        <soap:fault name="TissFault" use="literal" />
+      </fault>
+    </operation>
+  </binding>
+  <service name="tissSolicitacaoStatusRecursoGlosaTs">
+    <port name="tissSolicitacaoStatusRecursoGlosaTs_Port" binding="tns:tissSolicitacaoStatusRecursoGlosaTs_Binding">
+      <soap:address location="http://localhost:2085" />
+    </port>
+  </service>
+</definitions>

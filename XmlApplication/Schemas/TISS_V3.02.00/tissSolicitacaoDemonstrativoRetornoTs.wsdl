@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<definitions xmlns:tns="http://www.ans.gov.br/tiss/ws/tipos/tissSolicitacaoDemosntrativoRetornoTs/v30200" xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="tissSolicitacaoDemosntrativoRetornoTs" targetNamespace="http://www.ans.gov.br/tiss/ws/tipos/tissSolicitacaoDemosntrativoRetornoTs/v30200">
+	<types>
+		<schema targetNamespace="http://www.ans.gov.br/tiss/ws/tipos/tissSolicitacaoDemosntrativoRetornoTs/v30200" xmlns:tns="http://www.ans.gov.br/tiss/ws/tipos/tissSolicitacaoDemosntrativoRetornoTs/v30200" xmlns:soap11-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://www.ans.gov.br/padroes/tiss/schemas" schemaLocation="tissWebServicesV3_02_00.xsd"/>
+			<import namespace="http://www.ans.gov.br/padroes/tiss/schemas" schemaLocation="tissV3_02_00.xsd"/>
+			<element name="mensagemTISSString" type="xsd:string"/>
+		</schema>
+	</types>
+	<message name="enviarMensagemSolicitacaoDemonstrativoRetornoTISS_Request">
+		<part name="mensagem" element="tns:mensagemTISSString"/>
+	</message>
+	<message name="enviarMensagemTISS_Response">
+		<part name="resposta" element="ans:mensagemTISS"/>
+	</message>
+	<message name="tissFault">
+		<part name="tissFault" element="ans:tissFaultWS"/>
+	</message>
+	<portType name="tissSolicitacaoDemosntrativoRetornoTs_PortType">
+		<operation name="tissSolicitacaoDemosntrativoRetornoTs_Operation">
+			<input message="tns:enviarMensagemSolicitacaoDemonstrativoRetornoTISS_Request"/>
+			<output message="tns:enviarMensagemTISS_Response"/>
+			<fault name="TissFault" message="tns:tissFault"/>
+		</operation>
+	</portType>
+	<binding name="tissSolicitacaoDemosntrativoRetornoTs_Binding" type="tns:tissSolicitacaoDemosntrativoRetornoTs_PortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="tissSolicitacaoDemosntrativoRetornoTs_Operation">
+			<soap:operation/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+			<fault name="TissFault">
+				<soap:fault name="TissFault" use="literal"/>
+			</fault>
+		</operation>
+	</binding>
+	<service name="tissSolicitacaoDemosntrativoRetornoTs">
+		<port name="tissSolicitacaoDemosntrativoRetornoTs_Port" binding="tns:tissSolicitacaoDemosntrativoRetornoTs_Binding">
+			<soap:address location="http://localhost/WS/TISS/v3/02/00/tissSolicitacaoDemonstrativoRetorno.svc"/>
+		</port>
+	</service>
+</definitions>
