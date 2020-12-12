@@ -11,11 +11,11 @@
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
 </head>
-<body>
+<body id="page-top">
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
@@ -37,33 +37,39 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <div class="navbar navbar-inverse navbar-fixed-top">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
             <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" runat="server" href="~/">XML Application</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/App/TISS/ValidaTiss">Validar Arquivo TISS</a></li>
+                <a class="navbar-brand js-scroll-trigger" href="#page-top">XML Application</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" runat="server" href="~/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" runat="server" href="~/App/TISS/ValidaTiss">Validar Arquivo TISS</a>
+                        </li>
                     </ul>
-                    <p class="nav navbar-text navbar-right">Olá, <asp:LoginName runat="server" /></p>
+                    <span class="navbar-text text-light">Olá,
+                       <asp:LoginName runat="server" />
+                    </span>
                 </div>
             </div>
-        </div>
+        </nav>
+
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <hr />
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - Theiji Application</p>
-            </footer>
         </div>
+
+        <!-- Footer -->
+        <footer class="py-2 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">&copy; <%: DateTime.Now.Year %> - Theiji Application</p>
+            </div>
+        </footer>
 
     </form>
 </body>

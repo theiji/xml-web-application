@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="Validar Arquivo TISS" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ValidaTiss.aspx.cs" Inherits="XmlApplication.App.TISS.ValidaTiss" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h2><%: Title %>.</h2>
 
     <script lang="javascript" type="text/javascript">
         function CopiarTexto() {
@@ -29,6 +28,8 @@
             $('#modal-footer').focus();
         }
     </script>
+
+    <h2 class="pt-3"><%: Title %></h2>
 
     <div class="jumbotron">
         <div class="input-group mb-3">
