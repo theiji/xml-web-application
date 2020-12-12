@@ -26,96 +26,77 @@
             $("#modal-message").html(copyText.value);
             $("#modal-message").attr("class", "text-info");
             $('#myModal').modal("show");
+            $('#modal-footer').focus();
         }
     </script>
 
-    <div class="row">
-        <div class="col-md-12 jumbotron">
-            <label class="col-md-1 control-label">Arquivo</label>
-            <div class="col-md-11">
-                <asp:FileUpload ID="FileUpload" runat="server" Width="100%" />
+    <div class="jumbotron">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Arquivo</span>
             </div>
+            <div class="custom-file">
+                <asp:FileUpload ID="FileUpload1" runat="server" class="custom-file-input" aria-describedby="inputGroupFileAddon01" style="min-width:100%" />
+                <label class="custom-file-label" for="FileUpload1">Escolha o arquivo</label>
+            </div>
+        </div>
+
+        <div class="input-group sm-3">
+            <button class="btn btn-success btn-lg btn-block" runat="server" onserverclick="BtnValidaTiss_Click"><i class="glyphicon glyphicon-cog"></i>&nbsp;Calcular Hash</button>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            &nbsp;
+    <div class="card">
+        <div class="card-header text-white bg-primary">
+            <i class="bi bi-calculator-fill"></i>&nbsp;Resposta
         </div>
-    </div>
+        <div class="card-body">
 
-    <div class="row">
-        <div class="col-md-12">
-            <asp:Button ID="BtnValidaTiss" runat="server" class="btn btn-success btn-lg btn-block" Text="Calcular Hash" OnClick="BtnValidaTiss_Click" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            &nbsp;
-        </div>
-    </div>
-
-    <div class="panel panel-primary">
-        <div class="panel-heading"><i class="glyphicon glyphicon-check" aria-hidden="true"></i>&nbsp;Resposta</div>
-        <div class="panel-body">
-
-            <div class="row">
-                <label class="col-md-1 control-label">MD5</label>
-                <div class="col-md-11">
-                    <div class="input-group">
-                        <input type="text" name="TxtMD5" id="TxtMD5" class="form-control" runat="server" style="min-width: 100%" disabled>
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-info" onclick="CopiarTexto()" data-toggle="modal" data-target=".bs-example-modal-sm" title="Copiar para a área de transferência">
-                                <i class="glyphicon glyphicon-copy" aria-hidden="true"></i>&nbsp;Copiar</button>
-                        </div>
-                    </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" style="min-width:110px">MD5</span>
                 </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    &nbsp;
+                <input type="text" id="TxtMD5" class="form-control" runat="server" style="min-width:83.1%" readonly>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-info" onclick="CopiarTexto()" data-toggle="tooltip" data-placement="right" title="Copiar para a área de transferência">
+                        <i class="glyphicon glyphicon-copy" aria-hidden="true"></i>&nbsp;Copiar</button>
                 </div>
             </div>
 
-            <div class="row">
-                <label class="col-md-1 control-label">Mensagens</label>
-                <div class="col-md-11">
-                    <textarea class="form-control" name="TxtMsg" id="TxtMsg" runat="server" style="min-width: 100%" rows="5" disabled></textarea>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1" style="min-width:110px">Mensagens</span>
+                </div>
+                <textarea class="form-control" name="TxtMsg" id="TxtMsg" runat="server" style="min-width: 90%" rows="5" readonly></textarea>
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <asp:Label ID="TxtTempo" runat="server" class="control-label"></asp:Label>
                 </div>
             </div>
 
-            <div class="row">
-                <label class="col-md-1 control-label"></label>
-                <div class="col-md-11">
-                    <asp:Label ID="TxtTempo" runat="server" class="col-md-11 control-label"></asp:Label>
-                </div>
-            </div>
         </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-
-            <!-- Modal content-->
             <div class="modal-content">
-                <div class="modal-header" id="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="modal-title"></h4>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body" id="modal-body">
                     <p id="modal-message"></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="modal-footer" class="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
             </div>
-
         </div>
     </div>
-
 
 </asp:Content>

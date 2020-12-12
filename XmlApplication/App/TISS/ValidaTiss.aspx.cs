@@ -30,22 +30,19 @@ namespace XmlApplication.App.TISS
         {
             LimparView();
 
-            if (!FileUpload.HasFile)
+            if (!FileUpload1.HasFile)
             {
-                TxtTempo.Text = "Selecionar um arquivo. Favor verificar";
-                ExibirMensagem("Atenção", TxtTempo.Text, TipoMensagem.Alerta);
-                FileUpload.Focus();
+                ExibirMensagem("Atenção", "Selecionar um arquivo.Favor verificar", TipoMensagem.Alerta);
+                FileUpload1.Focus();
             }
-            else if (string.IsNullOrWhiteSpace(FileUpload.PostedFile.FileName))
+            else if (string.IsNullOrWhiteSpace(FileUpload1.PostedFile.FileName))
             {
-                TxtTempo.Text = "Selecionar um arquivo. Favor verificar";
-                ExibirMensagem("Atenção", TxtTempo.Text, TipoMensagem.Alerta);
-                FileUpload.Focus();
+                ExibirMensagem("Atenção", "Selecionar um arquivo.Favor verificar", TipoMensagem.Alerta);
+                FileUpload1.Focus();
             }
             else
             {
-                FileUpload.Enabled = false;
-                BtnValidaTiss.Enabled = false;
+                FileUpload1.Enabled = false;
 
                 var inicio = DateTime.Now;
 
@@ -58,29 +55,25 @@ namespace XmlApplication.App.TISS
                 }
                 catch (XmlException)
                 {
-                    TxtTempo.Text = "Arquivo no formato inválido. Favor verificar";
-                    ExibirMensagem("Erro", TxtTempo.Text, TipoMensagem.Erro);
+                    ExibirMensagem("Erro", "Arquivo no formato inválido. Favor verificar", TipoMensagem.Erro);
                 }
                 catch (OperationCanceledException)
                 {
-                    TxtTempo.Text = "Operação cancelada pelo usuário";
+                    ExibirMensagem("Erro", "Operação cancelada pelo usuário", TipoMensagem.Erro);
                 }
                 catch (SchemaXmlException ex)
                 {
-                    TxtTempo.Text = "Arquivo com estrutura inválido. Favor verificar";
                     TxtMsg.Value = ex.Message;
-                    ExibirMensagem("Erro", TxtTempo.Text, TipoMensagem.Erro);
+                    ExibirMensagem("Erro", "Arquivo com estrutura inválido. Favor verificar", TipoMensagem.Erro);
                 }
                 catch (Exception ex)
                 {
-                    TxtTempo.Text = "Arquivo inválido. Favor verificar";
                     TxtMsg.Value = ex.Message;
-                    ExibirMensagem("Erro", TxtTempo.Text, TipoMensagem.Erro);
+                    ExibirMensagem("Erro", "Arquivo inválido. Favor verificar", TipoMensagem.Erro);
                 }
                 finally
                 {
-                    FileUpload.Enabled = true;
-                    BtnValidaTiss.Enabled = true;
+                    FileUpload1.Enabled = true;
                 }
             }
         }
@@ -105,7 +98,7 @@ namespace XmlApplication.App.TISS
             string xml2txt = "";
             string hashInfo = "";
 
-            using (Stream stream = FileUpload.PostedFile.InputStream)
+            using (Stream stream = FileUpload1.PostedFile.InputStream)
             {
                 using (StreamReader reader = new StreamReader(stream))
                 {
