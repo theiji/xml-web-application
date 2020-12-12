@@ -239,19 +239,19 @@ namespace XmlApplication.App.TISS
             switch (tipo)
             {
                 case TipoMensagem.Sucesso:
-                    mensagem += $"$('#modal-header').attr('modal-header bg-success');";
+                    mensagem += $"$('#modal-header').attr('class','modal-header bg-success text-light');";
                     mensagem += $"$('#modal-message').attr('class','text-success');";
                     break;
                 case TipoMensagem.Alerta:
-                    mensagem += $"$('#modal-header').attr('modal-header bg-warning');";
+                    mensagem += $"$('#modal-header').attr('class','modal-header bg-warning text-light');";
                     mensagem += $"$('#modal-message').attr('class','text-warning');";
                     break;
                 case TipoMensagem.Erro:
-                    mensagem += $"$('#modal-header').css('modal-header bg-danger');";
+                    mensagem += $"$('#modal-header').css('class','modal-header bg-danger text-light');";
                     mensagem += $"$('#modal-message').attr('class','text-danger');";
                     break;
                 case TipoMensagem.Info:
-                    mensagem += $"$('#modal-header').css('modal-header bg-info');";
+                    mensagem += $"$('#modal-header').css('class','modal-header bg-info text-light');";
                     mensagem += $"$('#modal-message').attr('class','text-info');";
                     break;
                 default:

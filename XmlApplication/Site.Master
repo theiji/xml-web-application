@@ -65,10 +65,13 @@
         </div>
 
         <!-- Footer -->
-        <footer class="py-2 bg-dark">
-            <div class="container">
-                <p class="m-0 text-center text-white">&copy; <%: DateTime.Now.Year %> - Theiji Application</p>
-            </div>
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">&copy; 2020 - Theiji Application</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Privacy</a></li>
+                <li class="list-inline-item"><a href="#">Terms</a></li>
+                <li class="list-inline-item"><a href="#">Support</a></li>
+            </ul>
         </footer>
 
     </form>
