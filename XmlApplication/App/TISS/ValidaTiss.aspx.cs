@@ -100,7 +100,7 @@ namespace XmlApplication.App.TISS
 
             using (Stream stream = FileUpload1.PostedFile.InputStream)
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using (StreamReader reader = new StreamReader(stream, Encoding.Default))
                 {
                     string fileContents = reader.ReadToEnd();
 

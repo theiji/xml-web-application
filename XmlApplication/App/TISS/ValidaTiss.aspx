@@ -6,6 +6,14 @@
     <script src="../../Scripts/bootstrap.min.js"></script>
 
     <script lang="javascript" type="text/javascript">
+
+        $(document).ready(function () {
+            $('#MainContent_FileUpload1').on('change', function () {
+                var fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').html(fileName);
+            })
+        })
+
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
             $('[data-toggle="popover"]').popover();
@@ -68,10 +76,10 @@
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">MD5</span>
+                    <span class="input-group-text bg-dark text-light" style="min-width: 110px">MD5</span>
                 </div>
                 <input type="text" id="TxtMD5" class="form-control col-md-12" runat="server" readonly>
-                <div class="input-group-append">
+                <div class="input-group-append" data-toggle="tooltip" title="Copiar para a área de transferência">
                     <button type="button" id="btnCopiar" class="btn btn-info" onclick="CopiarTexto()" data-trigger="focus" data-toggle="popover" data-placement="right" data-content="Copiado">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" fill="currentColor" class="bi bi-clipboard" viewBox="0 2 18 16">
                             <path fill-rule="evenodd" d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
@@ -83,7 +91,7 @@
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">Mensagens</span>
+                    <span class="input-group-text bg-dark text-light" style="min-width: 110px" id="basic-addon1">Mensagens</span>
                 </div>
                 <textarea class="form-control col-md-12" name="TxtMsg" id="TxtMsg" runat="server" rows="5" readonly></textarea>
             </div>
