@@ -1,8 +1,16 @@
 ﻿<%@ Page Title="Validar Arquivo TISS" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ValidaTiss.aspx.cs" Inherits="XmlApplication.App.TISS.ValidaTiss" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script src="../../Scripts/jquery-3.5.1.min.js"></script>
+    <script src="../../Scripts/umd/popper.min.js"></script>
+    <script src="../../Scripts/bootstrap.min.js"></script>
 
     <script lang="javascript" type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="popover"]').popover();
+        })
+
         function CopiarTexto() {
             var copyText = document.getElementById("MainContent_TxtMD5");
 
@@ -19,19 +27,13 @@
             copyFrom.blur();
 
             document.body.removeChild(copyFrom);
-
-            $("#modal-title").html("Texto copiado para a área de transferência:");
-            $("#modal-header").attr("class", "modal-header bg-info text-light");
-            $("#modal-message").html(copyText.value);
-            $("#modal-message").attr("class", "text-info");
-            $('#myModal').modal("show");
-            $('#modal-footer').focus();
         }
     </script>
 
-    <h2 class="pt-3"><%: Title %></h2>
+    <h2 class="pt-4"><%: Title %></h2>
 
     <div class="jumbotron">
+
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text">Arquivo</span>
@@ -66,11 +68,11 @@
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" style="min-width: 110px">MD5</span>
+                    <span class="input-group-text">MD5</span>
                 </div>
-                <input type="text" id="TxtMD5" class="form-control" runat="server" style="min-width: 86.1%" readonly>
+                <input type="text" id="TxtMD5" class="form-control col-md-12" runat="server" readonly>
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-info" onclick="CopiarTexto()" data-toggle="tooltip" data-placement="right" title="Copiar para a área de transferência">
+                    <button type="button" id="btnCopiar" class="btn btn-info" onclick="CopiarTexto()" data-trigger="focus" data-toggle="popover" data-placement="right" data-content="Copiado">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" fill="currentColor" class="bi bi-clipboard" viewBox="0 2 18 16">
                             <path fill-rule="evenodd" d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
                             <path fill-rule="evenodd" d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
@@ -81,9 +83,9 @@
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1" style="min-width: 110px">Mensagens</span>
+                    <span class="input-group-text" id="basic-addon1">Mensagens</span>
                 </div>
-                <textarea class="form-control" name="TxtMsg" id="TxtMsg" runat="server" style="min-width: 90%" rows="5" readonly></textarea>
+                <textarea class="form-control col-md-12" name="TxtMsg" id="TxtMsg" runat="server" rows="5" readonly></textarea>
             </div>
 
             <div class="input-group mb-3">
