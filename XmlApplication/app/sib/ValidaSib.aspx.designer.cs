@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace XmlApplication.App.TISS
+namespace XmlApplication.app.sib
 {
 
 
-    public partial class ValidaTiss
+    public partial class ValidaSib
     {
 
         /// <summary>
@@ -22,6 +22,15 @@ namespace XmlApplication.App.TISS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload FileUpload1;
+
+        /// <summary>
+        /// PgsProgresso control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl PgsProgresso;
 
         /// <summary>
         /// TxtMD5 control.

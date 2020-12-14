@@ -37,6 +37,13 @@
             </Scripts>
         </asp:ScriptManager>
 
+        <script lang="javascript" type="text/javascript">
+            $('.nav-item').on("click", function () {
+                $('.nav-item').removeClass('active');
+                $(this).addClass('active');
+            });
+        </script>
+
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
             <div class="container">
                 <a class="navbar-brand js-scroll-trigger" href="#page-top">XML Application</a>
@@ -46,10 +53,13 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" runat="server" href="~/">Home</a>
+                            <a class="nav-link js-scroll-trigger" runat="server" href="~/">Home<span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link js-scroll-trigger" runat="server" href="~/App/TISS/ValidaTiss">Validar Arquivo TISS</a>
+                            <a class="nav-link js-scroll-trigger" runat="server" href="~/app/tiss/ValidaTiss">Validar Arquivo TISS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link js-scroll-trigger" runat="server" href="~/app/sib/ValidaSib">Validar Arquivo SIB</a>
                         </li>
                     </ul>
                     <span class="navbar-text text-light">Olá,
@@ -66,12 +76,8 @@
 
         <!-- Footer -->
         <footer class="my-5 pt-5 text-muted text-center text-small">
+            <hr />
             <p class="mb-1">&copy; 2020 - Theiji Application</p>
-            <ul class="list-inline">
-                <li class="list-inline-item"><a href="#">Privacy</a></li>
-                <li class="list-inline-item"><a href="#">Terms</a></li>
-                <li class="list-inline-item"><a href="#">Support</a></li>
-            </ul>
         </footer>
 
     </form>
