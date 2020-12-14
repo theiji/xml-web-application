@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Xml;
 using XmlApplication.Util;
 
@@ -13,13 +10,6 @@ namespace XmlApplication.App.TISS
     public partial class ValidaTiss : Page
     {
         private int _count;
-        private enum TipoMensagem
-        {
-            Sucesso,
-            Alerta,
-            Erro,
-            Info
-        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,14 +20,9 @@ namespace XmlApplication.App.TISS
         {
             LimparView();
 
-            if (!FileUpload1.HasFile)
+            if (!FileUpload1.HasFile || string.IsNullOrWhiteSpace(FileUpload1.PostedFile.FileName))
             {
-                ExibirMensagem("Atenção", "Selecionar um arquivo.Favor verificar", TipoMensagem.Alerta);
-                FileUpload1.Focus();
-            }
-            else if (string.IsNullOrWhiteSpace(FileUpload1.PostedFile.FileName))
-            {
-                ExibirMensagem("Atenção", "Selecionar um arquivo.Favor verificar", TipoMensagem.Alerta);
+                Utils.ExibirMensagem("Atenção", "Selecionar um arquivo.Favor verificar", Util.Enum.TipoMensagem.Alerta, this);
                 FileUpload1.Focus();
             }
             else
@@ -55,21 +40,21 @@ namespace XmlApplication.App.TISS
                 }
                 catch (XmlException)
                 {
-                    ExibirMensagem("Erro", "Arquivo no formato inválido. Favor verificar", TipoMensagem.Erro);
+                    Utils.ExibirMensagem("Erro", "Arquivo no formato inválido. Favor verificar", Util.Enum.TipoMensagem.Erro, this);
                 }
                 catch (OperationCanceledException)
                 {
-                    ExibirMensagem("Erro", "Operação cancelada pelo usuário", TipoMensagem.Erro);
+                    Utils.ExibirMensagem("Erro", "Operação cancelada pelo usuário", Util.Enum.TipoMensagem.Erro, this);
                 }
                 catch (SchemaXmlException ex)
                 {
-                    TxtMsg.Value = ex.Message;
-                    ExibirMensagem("Erro", "Arquivo com estrutura inválido. Favor verificar", TipoMensagem.Erro);
+                    TxtMsg.Value += ex.Message;
+                    Utils.ExibirMensagem("Erro", "Arquivo com estrutura inválido. Favor verificar", Util.Enum.TipoMensagem.Erro, this);
                 }
                 catch (Exception ex)
                 {
-                    TxtMsg.Value = ex.Message;
-                    ExibirMensagem("Erro", "Arquivo inválido. Favor verificar", TipoMensagem.Erro);
+                    TxtMsg.Value += ex.Message;
+                    Utils.ExibirMensagem("Erro", "Arquivo inválido. Favor verificar", Util.Enum.TipoMensagem.Erro, this);
                 }
                 finally
                 {
@@ -87,7 +72,7 @@ namespace XmlApplication.App.TISS
 
         private void AtualizarView(TimeSpan elapsedTime)
         {
-            var tempoDecorrido = $"{ elapsedTime.Seconds }.{ elapsedTime.Milliseconds} segundos!";
+            var tempoDecorrido = $"{elapsedTime.Seconds}.{elapsedTime.Milliseconds} segundos!";
             var mensagem = $"Processado em {tempoDecorrido}";
 
             TxtTempo.Text = mensagem;
@@ -100,6 +85,8 @@ namespace XmlApplication.App.TISS
 
             using (Stream stream = FileUpload1.PostedFile.InputStream)
             {
+                TxtMsg.Value += $"Arquivo: {FileUpload1.PostedFile.FileName}{Environment.NewLine}";
+
                 using (StreamReader reader = new StreamReader(stream, Encoding.Default))
                 {
                     string fileContents = reader.ReadToEnd();
@@ -151,13 +138,13 @@ namespace XmlApplication.App.TISS
             }
 
             //calcular o hash
-            var hashCalc = CalculateMD5Hash(xml2txt)?.ToUpper();
+            var hashCalc = Utils.CalculateMD5Hash(xml2txt)?.ToUpper();
             TxtMD5.Value = hashCalc;
 
             //comparar o hash enviado com o calculado 
             if (hashInfo != hashCalc)
             {
-                TxtMsg.Value += "HASH INVÁLIDO\r\nINFORMADO: " + hashInfo + "\r\nCALCULADO: " + hashCalc;
+                TxtMsg.Value += $"HASH INVÁLIDO{Environment.NewLine}INFORMADO: {hashInfo}{Environment.NewLine}CALCULADO: {hashCalc}";
             }
             else
             {
@@ -179,7 +166,7 @@ namespace XmlApplication.App.TISS
                 case "3.04.01":
                     versaoValida = true; break;
                 default:
-                    TxtMsg.Value = string.Format($"Versão {versao} inválida ou não configurada.\r\n");
+                    TxtMsg.Value += $"Versão {versao} inválida ou não configurada.{Environment.NewLine}";
                     break;
             }
             return versaoValida;
@@ -196,72 +183,12 @@ namespace XmlApplication.App.TISS
             }
             else if (root is XmlText)
             {
-                if (ExisteCaracterEspecial(root.Value))
+                if (Utils.ExisteCaracterEspecial(root.Value))
                 {
                     _count++;
-                    TxtMsg.Value += "ERRO - " + _count.ToString() + "\r\n" + root.Value + "\r\n" + "\r\n";
+                    TxtMsg.Value += $"ERRO - {_count}{Environment.NewLine}{root.Value}{Environment.NewLine}{Environment.NewLine}";
                 }
             }
-        }
-
-        private bool ExisteCaracterEspecial(string texto)
-        {
-            var count = 0;
-            UnicodeCategory[] allowedCategories = { UnicodeCategory.MathSymbol, UnicodeCategory.CurrencySymbol, UnicodeCategory.ModifierSymbol };
-            foreach (char c in texto)
-            {
-                if (char.IsSymbol(c))
-                {
-                    if (!allowedCategories.Contains(CharUnicodeInfo.GetUnicodeCategory(c)))
-                        count++;
-                }
-            }
-
-            return count > 0;
-        }
-
-        public static string CalculateMD5Hash(string input)
-        {
-            System.Security.Cryptography.MD5CryptoServiceProvider md5Hasher = new System.Security.Cryptography.MD5CryptoServiceProvider();
-            byte[] hash = md5Hasher.ComputeHash(Encoding.Default.GetBytes(input));
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hash.Length; i++)
-            {
-                sb.Append(hash[i].ToString("X2"));
-            }
-            return sb.ToString().ToLower();
-        }
-
-        private void ExibirMensagem(string cabecalho, string texto, TipoMensagem tipo)
-        {
-            string mensagem = $"javascript: $('#modal-title').html('{cabecalho}');";
-            switch (tipo)
-            {
-                case TipoMensagem.Sucesso:
-                    mensagem += "$('#modal-header').attr('class','modal-header bg-success text-light');";
-                    mensagem += "$('#modal-message').attr('class','text-success');";
-                    break;
-                case TipoMensagem.Alerta:
-                    mensagem += "$('#modal-header').attr('class','modal-header bg-warning text-light');";
-                    mensagem += "$('#modal-message').attr('class','text-warning');";
-                    break;
-                case TipoMensagem.Erro:
-                    mensagem += "$('#modal-header').attr('class','modal-header bg-danger text-light');";
-                    mensagem += "$('#modal-message').attr('class','text-danger');";
-                    break;
-                case TipoMensagem.Info:
-                    mensagem += "$('#modal-header').attr('class','modal-header bg-info text-light');";
-                    mensagem += "$('#modal-message').attr('class','text-info');";
-                    break;
-                default:
-                    break;
-            }
-
-            mensagem += $"$('#modal-message').html('{texto}');";
-            mensagem += "$('#myModal').modal('show');";
-
-            Page.ClientScript.RegisterStartupScript(GetType(), "", mensagem, true);
         }
     }
 }
