@@ -83,12 +83,14 @@ namespace XmlApplication.app.tiss
             PgsProgresso.Attributes.Add("role", "progressbar");
             PgsProgresso.Attributes.Add("aria-valuemin", "0");
             PgsProgresso.Attributes.Add("aria-valuemax", "100");
+            /*
             PgsProgresso.Attributes.Add("aria-valuenow", $"{progresso}");
             if (progresso > 0)
             {
                 PgsProgresso.Style.Add("width", $"{progresso}%");
                 PgsProgresso.InnerText = $"{progresso}%";
             }
+            */
         }
 
         private void AtualizarView(TimeSpan elapsedTime)

@@ -45,19 +45,23 @@ namespace XmlApplication.app.sib
                 }
                 catch (XmlException)
                 {
+                    AtualizarProgresso(100);
                     Utils.ExibirMensagem("Erro", "Arquivo no formato inválido. Favor verificar", Util.Enum.TipoMensagem.Erro, this);
                 }
                 catch (OperationCanceledException)
                 {
+                    AtualizarProgresso(100);
                     Utils.ExibirMensagem("Erro", "Operação cancelada pelo usuário", Util.Enum.TipoMensagem.Erro, this);
                 }
                 catch (SchemaXmlException ex)
                 {
+                    AtualizarProgresso(100);
                     TxtMsg.Value += ex.Message;
                     Utils.ExibirMensagem("Erro", "Arquivo com estrutura inválido. Favor verificar", Util.Enum.TipoMensagem.Erro, this);
                 }
                 catch (Exception ex)
                 {
+                    AtualizarProgresso(100);
                     TxtMsg.Value += ex.Message;
                     Utils.ExibirMensagem("Erro", "Arquivo inválido. Favor verificar", Util.Enum.TipoMensagem.Erro, this);
                 }
