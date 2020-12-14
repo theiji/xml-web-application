@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.UI;
 
 namespace XmlApplication.Util
@@ -70,5 +67,11 @@ namespace XmlApplication.Util
             page.ClientScript.RegisterStartupScript(page.GetType(), "", mensagem, true);
         }
 
+        public static void ExecutarJavaScript(string comandoJavaScript, Page page)
+        {
+            string comando = $"javascript: {comandoJavaScript}";
+
+            page.ClientScript.RegisterStartupScript(page.GetType(), "", comando, true);
+        }
     }
 }

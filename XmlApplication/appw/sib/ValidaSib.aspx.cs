@@ -1,23 +1,30 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Web.UI;
 using System.Xml;
 using XmlApplication.Util;
 
-namespace XmlApplication.App.SIB
+namespace XmlApplication.app.sib
 {
     public partial class ValidaSib : Page
     {
+        private CancellationTokenSource _cts;
         private int _count;
+        private int _nodeIndex;
+        private int _nodeTotalCount;
 
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
-        protected void BtnValidaSib_Click(object sender, EventArgs e)
+
+        protected void BtnValidar_Click(object sender, EventArgs e)
         {
+            _cts = new CancellationTokenSource();
             LimparView();
+            AtualizarProgresso(0);
 
             if (!FileUpload1.HasFile || string.IsNullOrWhiteSpace(FileUpload1.PostedFile.FileName))
             {
@@ -27,7 +34,6 @@ namespace XmlApplication.App.SIB
             else
             {
                 FileUpload1.Enabled = false;
-
                 var inicio = DateTime.Now;
 
                 try
@@ -69,6 +75,22 @@ namespace XmlApplication.App.SIB
             TxtTempo.Text = "";
         }
 
+        private void AtualizarProgresso(int progresso)
+        {
+            PgsProgresso.Attributes.Clear();
+            PgsProgresso.InnerText = "";
+            PgsProgresso.Attributes.Add("class", "progress-bar");
+            PgsProgresso.Attributes.Add("role", "progressbar");
+            PgsProgresso.Attributes.Add("aria-valuemin", "0");
+            PgsProgresso.Attributes.Add("aria-valuemax", "100");
+            PgsProgresso.Attributes.Add("aria-valuenow", $"{progresso}");
+            if (progresso > 0)
+            {
+                PgsProgresso.Attributes.Add("style", $"width: {progresso}%");
+                PgsProgresso.InnerText = $"{progresso}%";
+            }
+        }
+
         private void AtualizarView(TimeSpan elapsedTime)
         {
             var tempoDecorrido = $"{elapsedTime.Seconds}.{elapsedTime.Milliseconds} segundos!";
@@ -99,18 +121,26 @@ namespace XmlApplication.App.SIB
                     ValidadorSchema.Validar(stream, Server.MapPath(string.Format($"Schemas\\sib.xsd")));
 
                     _count = 0;
+                    _nodeIndex = 1;
+                    _nodeTotalCount = xmlDoc.SelectNodes("descendant::*").Count;
                     var nodeList = xmlDoc.SelectNodes("//mensagemSIB/*");
                     foreach (XmlNode root in nodeList)
                     {
                         switch (root.Name.ToString())
                         {
                             case "cabecalho":
+                                _nodeIndex += root.SelectNodes("descendant::*").Count;
+                                AtualizarProgresso((int)Math.Floor((double)_nodeIndex / _nodeTotalCount * 100));
                                 xml2txt += root.InnerText;
                                 break;
                             case "epilogo":
+                                _nodeIndex += root.SelectNodes("descendant::*").Count;
+                                AtualizarProgresso((int)Math.Floor((double)_nodeIndex / _nodeTotalCount * 100));
                                 hashInfo = root.InnerText?.ToUpper();
                                 break;
                             case "hash":
+                                _nodeIndex += root.SelectNodes("descendant::*").Count;
+                                AtualizarProgresso((int)Math.Floor((double)_nodeIndex / _nodeTotalCount * 100));
                                 hashInfo = root.InnerText?.ToUpper();
                                 break;
                             default:
@@ -143,6 +173,8 @@ namespace XmlApplication.App.SIB
         {
             if (root is XmlElement)
             {
+                AtualizarProgresso((int)Math.Floor((double)_nodeIndex++ / _nodeTotalCount * 100));
+
                 if (root.HasChildNodes)
                     ReadXML(root.FirstChild);
                 if (root.NextSibling != null)
@@ -155,6 +187,14 @@ namespace XmlApplication.App.SIB
                     _count++;
                     TxtMsg.Value += $"ERRO - {_count}{Environment.NewLine}{root.Value}{Environment.NewLine}{Environment.NewLine}";
                 }
+            }
+        }
+
+        protected void BtnCancelar_Click(object sender, EventArgs e)
+        {
+            if (_cts != null)
+            {
+                _cts.Cancel();
             }
         }
     }

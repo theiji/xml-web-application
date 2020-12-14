@@ -1,24 +1,30 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Web.UI;
 using System.Xml;
 using XmlApplication.Util;
 
-namespace XmlApplication.App.TISS
+namespace XmlApplication.app.tiss
 {
     public partial class ValidaTiss : Page
     {
+        private CancellationTokenSource _cts;
         private int _count;
+        private int _nodeIndex;
+        private int _nodeTotalCount;
 
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
 
-        protected void BtnValidaTiss_Click(object sender, EventArgs e)
+        protected void BtnValidar_Click(object sender, EventArgs e)
         {
+            _cts = new CancellationTokenSource();
             LimparView();
+            AtualizarProgresso(0);
 
             if (!FileUpload1.HasFile || string.IsNullOrWhiteSpace(FileUpload1.PostedFile.FileName))
             {
@@ -28,7 +34,6 @@ namespace XmlApplication.App.TISS
             else
             {
                 FileUpload1.Enabled = false;
-
                 var inicio = DateTime.Now;
 
                 try
@@ -70,6 +75,22 @@ namespace XmlApplication.App.TISS
             TxtTempo.Text = "";
         }
 
+        private void AtualizarProgresso(int progresso)
+        {
+            PgsProgresso.Attributes.Clear();
+            PgsProgresso.InnerText = "";
+            PgsProgresso.Attributes.Add("class", "progress-bar");
+            PgsProgresso.Attributes.Add("role", "progressbar");
+            PgsProgresso.Attributes.Add("aria-valuemin", "0");
+            PgsProgresso.Attributes.Add("aria-valuemax", "100");
+            PgsProgresso.Attributes.Add("aria-valuenow", $"{progresso}");
+            if (progresso > 0)
+            {
+                PgsProgresso.Style.Add("width", $"{progresso}%");
+                PgsProgresso.InnerText = $"{progresso}%";
+            }
+        }
+
         private void AtualizarView(TimeSpan elapsedTime)
         {
             var tempoDecorrido = $"{elapsedTime.Seconds}.{elapsedTime.Milliseconds} segundos!";
@@ -108,22 +129,30 @@ namespace XmlApplication.App.TISS
                     if (ValidarVersaoTiss(versaoNode.InnerText))
                     {
                         stream.Position = 0;
-                        ValidadorSchema.Validar(stream, Server.MapPath(string.Format($"Schemas\\TISS_V{versaoNode.InnerText}\\tissV3_02_00.xsd")));
+                        ValidadorSchema.Validar(stream, Server.MapPath(string.Format($"schemas\\tiss_v{versaoNode.InnerText}\\tissV3_02_00.xsd")));
                     }
 
                     _count = 0;
+                    _nodeIndex = 1;
+                    _nodeTotalCount = xmlDoc.SelectNodes("descendant::*").Count;
                     XmlNode nodeList = xmlDoc.SelectSingleNode("//*[local-name()='cabecalho']/*", nsmgr)?.ParentNode?.ParentNode;
                     foreach (XmlNode root in nodeList)
                     {
                         switch (root.LocalName.ToString())
                         {
                             case "cabecalho":
+                                _nodeIndex += root.SelectNodes("descendant::*").Count;
+                                AtualizarProgresso((int)Math.Floor((double)_nodeIndex / _nodeTotalCount * 100));
                                 xml2txt += root.InnerText;
                                 break;
                             case "epilogo":
+                                _nodeIndex += root.SelectNodes("descendant::*").Count;
+                                AtualizarProgresso((int)Math.Floor((double)_nodeIndex / _nodeTotalCount * 100));
                                 hashInfo = root.InnerText?.ToUpper();
                                 break;
                             case "hash":
+                                _nodeIndex += root.SelectNodes("descendant::*").Count;
+                                AtualizarProgresso((int)Math.Floor((double)_nodeIndex / _nodeTotalCount * 100));
                                 hashInfo = root.InnerText?.ToUpper();
                                 break;
                             default:
@@ -188,6 +217,14 @@ namespace XmlApplication.App.TISS
                     _count++;
                     TxtMsg.Value += $"ERRO - {_count}{Environment.NewLine}{root.Value}{Environment.NewLine}{Environment.NewLine}";
                 }
+            }
+        }
+
+        protected void BtnCancelar_Click(object sender, EventArgs e)
+        {
+            if (_cts != null)
+            {
+                _cts.Cancel();
             }
         }
     }
